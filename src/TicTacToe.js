@@ -95,9 +95,9 @@ function TicTacToe() {
         return  history.map((item, index) => {
             if(item){
                 if (index > 0) {
-                    return <button onClick={() => setUserClickCount(index)}>{`Go to Step #${index}`}</button>
+                    return <button style={{width: '100px'}} onClick={() => setUserClickCount(index)}>{`Go to Step #${index}`}</button>
                 } else {
-                    return <button onClick={() => setUserClickCount(0)}>Go to First Step</button>
+                    return <button style={{width: '100px'}} onClick={() => setUserClickCount(0)}>Go to First Step</button>
                 }
             }
            
@@ -118,7 +118,7 @@ function TicTacToe() {
                 xIsNext={xIsNext}
                 handleOnPlay={handleOnPlay}
             />
-            <div data-testid='moves-history'>
+            <div data-testid='moves-history' style={{display: 'flex', flexDirection: 'column'}}>
                 {printTheMoves()}
             </div>
         </div>
