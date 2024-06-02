@@ -16,3 +16,28 @@ body {
   box-sizing: border-box;
   font-family: Arial, sans-serif;
 }
+
+.recipient-detail-outer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.truncate-email-box {
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.badge-tooltip {
+  background-color: #666;
+  color: #f0f0f0;
+  border-radius: 24px;
+  padding: 8px 16px;
+  z-index: 1;
+  margin-top: 8px;
+}
+

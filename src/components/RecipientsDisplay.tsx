@@ -1,5 +1,14 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import RecipientsBadge from './RecipientsBadge';
+import '../index.css'
+
+const RecipientTooltip = ({ text, position }) => {
+  return (
+    <div className="badge-tooltip " style={{ position: 'fixed', top: position.top, left: position.left}}>
+      <span>{text}</span>
+    </div>
+  );
+};
 
 export default function RecipientsDisplay({ recipients }) {
   const [truncatedEmails, setTruncatedEmails] = useState([]);
@@ -8,6 +17,8 @@ export default function RecipientsDisplay({ recipients }) {
   const badgeWrapperRef = useRef(null);
   const [availableWidth, setAvailableWidth] = useState(0);
   const [badgeWidth, setBadgeWidth] = useState(0);
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({});
 
   const updateWidths = () => {
     if (tdRef.current) {
@@ -18,14 +29,9 @@ export default function RecipientsDisplay({ recipients }) {
     }
   };
 
-  useLayoutEffect(() => {
-    // Initial width calculation
+  useEffect(() => {
     updateWidths();
-
-    // Recalculate width on window resize
     window.addEventListener('resize', updateWidths);
-
-    // Cleanup event listener
     return () => window.removeEventListener('resize', updateWidths);
   }, []);
 
@@ -58,26 +64,36 @@ export default function RecipientsDisplay({ recipients }) {
     document.body.removeChild(oneRowEmails);
   }, [recipients, availableWidth, badgeWidth]);
 
+  const handleBadgeHover = (e) => {
+    const rect = e.target.getBoundingClientRect();
+    setTooltipPosition({
+      top: rect.top + window.scrollY + rect.height,
+      left: rect.left + window.scrollX,
+    });
+    setShowTooltip(true);
+  };
 
-  const ShowToolTipOnHover = () => {
-    return (
-      <div className="tooltip">
-        Hello
-      </div>
-    )
-  }
-
-  
+  const handleBadgeLeave = () => {
+    setShowTooltip(false);
+  };
 
   return (
     <React.Fragment>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-        <div ref={tdRef} style={{ whiteSpace: 'nowrap', overflow: 'hidden',  maxWidth: '100%' }}>
-          {truncatedEmails.join(', ')}
+      <div className='recipient-detail-outer'>
+        <div ref={tdRef} className="truncate-email-box">
+          {`${truncatedEmails.join(', ')}${numTruncated > 0 ? ', ...' : '' }`}
         </div>
         {numTruncated > 0 &&
-          <div ref={badgeWrapperRef}>
+          <div
+            ref={badgeWrapperRef}
+            onMouseEnter={handleBadgeHover}
+            onMouseLeave={handleBadgeLeave}
+            style={{ position: 'relative' }}
+          >
             <RecipientsBadge numTruncated={numTruncated} />
+            {showTooltip && (
+              <RecipientTooltip text={recipients} position={tooltipPosition} />
+            )}
           </div>
         }
       </div>
