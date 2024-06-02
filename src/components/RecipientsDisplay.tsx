@@ -4,7 +4,8 @@ import '../index.css'
 
 const RecipientTooltip = ({ text, position }) => {
   return (
-    <div className="badge-tooltip " style={{ position: 'fixed', top: position.top, left: position.left}}>
+    // Would prefer external CSS, since the challenge strictly wanted modification in one file, using inline styling
+    <div style={{ position: 'fixed', top: position.top, left: position.left, backgroundColor: '#666', color: '#f0f0f0', borderRadius: '24px', padding: '8px 16px', zIndex: 1, marginTop: '8px'}}>
       <span>{text}</span>
     </div>
   );
@@ -79,8 +80,8 @@ export default function RecipientsDisplay({ recipients }) {
 
   return (
     <React.Fragment>
-      <div className='recipient-detail-outer'>
-        <div ref={tdRef} className="truncate-email-box">
+      <div style={{display: 'grid', gridTemplateColumns: '1fr auto', maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+        <div ref={tdRef} style={{whiteSpace: 'nowrap', overflow: 'hidden', maxWidth: '100%'}}>
           {`${truncatedEmails.join(', ')}${numTruncated > 0 ? ', ...' : '' }`}
         </div>
         {numTruncated > 0 &&
