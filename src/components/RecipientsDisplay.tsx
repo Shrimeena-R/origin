@@ -67,6 +67,8 @@ export default function RecipientsDisplay({ recipients }) {
     )
   }
 
+  
+
   return (
     <React.Fragment>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', maxWidth: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
